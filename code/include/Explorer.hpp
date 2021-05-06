@@ -67,22 +67,22 @@ public:
 
   /**
    * @brief Move position to North, if is valid.
-   * @return true if it was a valid move, false otherwise
+   * @return true if it was a valid move
    */
   bool goNorth();
   /**
    * @brief Move position to East, if is valid.
-   * @return true if it was a valid move, false otherwise
+   * @return true if it was a valid move
    */
   bool goEast();
   /**
    * @brief Move position to South, if is valid.
-   * @return true if it was a valid move, false otherwise
+   * @return true if it was a valid move
    */
   bool goSouth();
   /**
    * @brief Move position to West, if is valid.
-   * @return true if it was a valid move, false otherwise
+   * @return true if it was a valid move
    */
   bool goWest();
 
@@ -93,6 +93,12 @@ public:
   bool isLastOne();
 
 private:
+  /**
+   * @brief Move position to a specific room id
+   * @return if is was a valid move
+   */
+  bool goToRoom(RoomId id);
+
   /**
    * @brief Dungeon rappresentation
    */
