@@ -28,12 +28,13 @@ TEST_CASE("Test Explorer", "[explorer]") {
                       std::invalid_argument);
     dungeon = std::unique_ptr<dadv::Dungeon>(new dadv::Dungeon());
     auto explorer = new dadv::Explorer(std::move(dungeon), 0, 0);
-    REQUIRE(explorer->getCurrentDescription() == "");
-    REQUIRE_FALSE(explorer->goNorth());
-    REQUIRE_FALSE(explorer->goEast());
-    REQUIRE_FALSE(explorer->goSouth());
-    REQUIRE_FALSE(explorer->goWest());
-    REQUIRE_FALSE(explorer->isLastOne());
+    REQUIRE(explorer->getCurrentDescription() == description);
+    REQUIRE_THROWS_AS(explorer->goNorth(), std::runtime_error);
+    REQUIRE_THROWS_AS(explorer->goEast(), std::runtime_error);
+    REQUIRE_THROWS_AS(explorer->goSouth(), std::runtime_error);
+    REQUIRE_THROWS_AS(explorer->goWest(), std::runtime_error);
+    REQUIRE(explorer->getDirections() == "N - E - S - W");
+    REQUIRE(explorer->isLastOne());
   }
 
   SECTION("One room dungeon") {
@@ -51,6 +52,7 @@ TEST_CASE("Test Explorer", "[explorer]") {
     REQUIRE_FALSE(explorer->goSouth());
     REQUIRE_FALSE(explorer->goWest());
     REQUIRE(explorer->isLastOne());
+    REQUIRE(explorer->getDirections() == "");
   }
 
   SECTION("More rooms dungeon") {
@@ -59,11 +61,13 @@ TEST_CASE("Test Explorer", "[explorer]") {
     dadv::Room room;
     // Build dungeon rooms
     std::string descriptionA("First room");
+    room.id = 0;
     room.description = descriptionA;
     room.south = 1;
     dungeon->emplace(std::pair<dadv::RoomId, dadv::Room>(room.id, room));
     room.south = dadv::InvalidDirection;
     std::string descriptionB("Middle room");
+    room.id = 1;
     room.description = descriptionB;
     room.east = 2;
     room.north = 0;
@@ -71,8 +75,10 @@ TEST_CASE("Test Explorer", "[explorer]") {
     room.east = dadv::InvalidDirection;
     room.north = dadv::InvalidDirection;
     std::string descriptionC("Last room");
+    room.id = 2;
     room.description = descriptionC;
     room.west = 1;
+    dungeon->emplace(std::pair<dadv::RoomId, dadv::Room>(room.id, room));
     // Start adventure
     auto explorer = new dadv::Explorer(std::move(dungeon), 0, 2);
     // First room (A)
@@ -81,21 +87,25 @@ TEST_CASE("Test Explorer", "[explorer]") {
     REQUIRE_FALSE(explorer->goNorth());
     REQUIRE_FALSE(explorer->goEast());
     REQUIRE_FALSE(explorer->goWest());
+    REQUIRE(explorer->getDirections() == "S");
     REQUIRE(explorer->goSouth());
     // Second room (B)
     REQUIRE(explorer->getCurrentDescription() == descriptionB);
     REQUIRE_FALSE(explorer->isLastOne());
+    REQUIRE(explorer->getDirections() == "N - E");
     REQUIRE(explorer->goNorth());
     // Back to first room (A)
     REQUIRE(explorer->getCurrentDescription() == descriptionA);
     REQUIRE(explorer->goSouth());
     // Second room (B)
+    REQUIRE(explorer->getCurrentDescription() == descriptionB);
     REQUIRE_FALSE(explorer->goSouth());
     REQUIRE_FALSE(explorer->goWest());
     REQUIRE(explorer->goEast());
     // Last room (C)
     REQUIRE(explorer->getCurrentDescription() == descriptionC);
     REQUIRE(explorer->isLastOne());
+    REQUIRE(explorer->getDirections() == "W");
     REQUIRE_FALSE(explorer->goNorth());
     REQUIRE_FALSE(explorer->goEast());
     REQUIRE_FALSE(explorer->goSouth());
