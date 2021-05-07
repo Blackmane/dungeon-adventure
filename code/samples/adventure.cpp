@@ -22,8 +22,8 @@ const std::string WorldPath = "worlds/world.dat";
 
 int main(void) {
 
-    auto game = dadv::Game::loadFromMap(WorldPath);
-    game->start();
+  auto game = dadv::Game::loadFromMap(WorldPath);
+  game->start();
 
   return 0;
 }

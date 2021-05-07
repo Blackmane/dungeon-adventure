@@ -154,7 +154,6 @@ dadv::Game::loadFromMap(const std::string pathToMap) {
   dadv::RoomId first, last;
   std::unique_ptr<dadv::Explorer> explorer =
       std::unique_ptr<dadv::Explorer>(new dadv::Explorer(
-          dadv::getDungeonFromFile(pathToMap, &first, &last), first,
-          last));
+          dadv::getDungeonFromFile(pathToMap, &first, &last), first, last));
   return std::unique_ptr<Game>(new Game(std::move(explorer)));
 }
