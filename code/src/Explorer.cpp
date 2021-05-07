@@ -22,7 +22,7 @@ dadv::Explorer::Explorer(std::unique_ptr<Dungeon> dungeon, const RoomId first,
     : _dungeon(std::move(dungeon)), _last(last) {
 
   if (!_dungeon) {
-    throw std::invalid_argument("Dungeon is a invalid pointer");
+    throw std::invalid_argument("Dungeon is an invalid pointer");
   }
 
   _position = _dungeon->find(first);

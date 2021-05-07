@@ -42,6 +42,8 @@ public:
    * @param dungeon unique reference to a dungeon. Dungeon should not empty.
    * @param first room from where explorer start
    * @param last room to arrive
+   * @throw invalid_argument if dungeon is an invalid pointer
+   * @throw invalid_argument if first is not a room inside dungeon
    */
   explicit Explorer(std::unique_ptr<Dungeon> dungeon, const RoomId first,
                     const RoomId last);
@@ -68,21 +70,25 @@ public:
   /**
    * @brief Move position to North, if is valid.
    * @return true if it was a valid move
+   * @throw runtime_error if the North room doesn't exist
    */
   bool goNorth();
   /**
    * @brief Move position to East, if is valid.
    * @return true if it was a valid move
+   * @throw runtime_error if the East room doesn't exist
    */
   bool goEast();
   /**
    * @brief Move position to South, if is valid.
    * @return true if it was a valid move
+   * @throw runtime_error if the South room doesn't exist
    */
   bool goSouth();
   /**
    * @brief Move position to West, if is valid.
    * @return true if it was a valid move
+   * @throw runtime_error if the West room doesn't exist
    */
   bool goWest();
 
@@ -96,6 +102,7 @@ private:
   /**
    * @brief Move position to a specific room id
    * @return if is was a valid move
+   * @throw runtime_error if id is a room that doesn't exist
    */
   bool goToRoom(const RoomId id);
 
