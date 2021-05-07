@@ -28,7 +28,22 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
         -ffunction-sections -fdata-sections
         -pie
         "$<$<CONFIG:RELEASE>:-Werror;-g3;-O2>"
+        # $<$<NOT:$<CONFIG:DEBUG>>:-O2> 
+        "$<$<CONFIG:TSAN>:-fsanitize=thread;-g;-O1>"
+        "$<$<CONFIG:ASAN>:-fsanitize=address;-fno-optimize-sibling-calls;-fsanitize-address-use-after-scope;-fno-omit-frame-pointer;-g;-O1>"
+        "$<$<CONFIG:LSAN>:-fsanitize=leak;-fno-omit-frame-pointer;-g;-O1>"
+        # "$<$<CONFIG:MSAN>:-fsanitize=memory;-fno-optimize-sibling-calls;-fsanitize-memory-track-origins=2;-fno-omit-frame-pointer;-g;-O2>"
+        "$<$<CONFIG:UBSAN>:-fsanitize=undefined>"
         -fPIC)
+
+    add_link_options(
+        $<$<CONFIG:TSAN>:-fsanitize=thread> 
+        $<$<CONFIG:ASAN>:-fsanitize=address>
+        $<$<CONFIG:TSAN>:-fsanitize=leak>
+        #$<$<CONFIG:MSAN>:-fsanitize=memory>
+        $<$<CONFIG:UBSAN>:-fsanitize=undefined> 
+        )
+
     # Adding an option to switch on or off compilation of tests
     option (ENABLE_TESTING "Set to ON to perform unit tests" OFF)
     if (ENABLE_TESTING)
