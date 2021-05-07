@@ -17,33 +17,25 @@
 #include "Explorer.hpp"
 #include <stdexcept>
 
-dadv::Explorer::Explorer(std::unique_ptr<Dungeon> dungeon, RoomId first,
-                         RoomId last)
-    : _dungeon(std::move(dungeon)), _position(first), _first(first),
-      _last(last) {
+dadv::Explorer::Explorer(std::unique_ptr<Dungeon> dungeon, const RoomId first,
+                         const RoomId last)
+    : _dungeon(std::move(dungeon)), _last(last) {
 
   if (!_dungeon) {
     throw std::invalid_argument("Dungeon is a invalid pointer");
   }
+
+  _position = _dungeon->find(first);
+  if (_position == _dungeon->end()) {
+    throw std::invalid_argument("First room doesn't exist");
+  }
 }
 
-dadv::Explorer::~Explorer() {}
-
-std::string dadv::Explorer::getCurrentDescription() {
-  auto it = _dungeon->find(_position);
-  if (it == _dungeon->end()) {
-    // Handle an invalid position
-    return "";
-  }
-  return it->second.description;
+std::string dadv::Explorer::getCurrentDescription() noexcept {
+  return _position->second.description;
 }
 
-std::string dadv::Explorer::getDirections() {
-  auto it = _dungeon->find(_position);
-  if (it == _dungeon->end()) {
-    // Handle an invalid position
-    return "";
-  }
+std::string dadv::Explorer::getDirections() noexcept {
   std::string result("");
   if (_position->second.north != InvalidDirection) {
     result += "N - ";
@@ -64,52 +56,17 @@ std::string dadv::Explorer::getDirections() {
   return result;
 }
 
-bool dadv::Explorer::goNorth() {
-  auto it = _dungeon->find(_position);
-  if (it == _dungeon->end()) {
-    // Handle an invalid position
-    return false;
-  }
-  return goToRoom(it->second.north);
-}
+bool dadv::Explorer::goNorth() { return goToRoom(_position->second.north); }
 
-bool dadv::Explorer::goEast() {
-  auto it = _dungeon->find(_position);
-  if (it == _dungeon->end()) {
-    // Handle an invalid position
-    return false;
-  }
-  return goToRoom(it->second.east);
-}
+bool dadv::Explorer::goEast() { return goToRoom(_position->second.east); }
 
-bool dadv::Explorer::goSouth() {
-  auto it = _dungeon->find(_position);
-  if (it == _dungeon->end()) {
-    // Handle an invalid position
-    return false;
-  }
-  return goToRoom(it->second.south);
-}
+bool dadv::Explorer::goSouth() { return goToRoom(_position->second.south); }
 
-bool dadv::Explorer::goWest() {
-  auto it = _dungeon->find(_position);
-  if (it == _dungeon->end()) {
-    // Handle an invalid position
-    return false;
-  }
-  return goToRoom(it->second.west);
-}
+bool dadv::Explorer::goWest() { return goToRoom(_position->second.west); }
 
-bool dadv::Explorer::isLastOne() {
-  auto it = _dungeon->find(_position);
-  if (it == _dungeon->end()) {
-    // Handle an invalid position
-    return false;
-  }
-  return it->first == _last;
-}
+bool dadv::Explorer::isLastOne() noexcept { return _position->first == _last; }
 
-bool dadv::Explorer::goToRoom(RoomId id) {
+bool dadv::Explorer::goToRoom(const RoomId id) {
   if (id == InvalidDirection) {
     return false;
   }
@@ -118,6 +75,6 @@ bool dadv::Explorer::goToRoom(RoomId id) {
     throw std::runtime_error("Room <" + std::to_string(id) +
                              "> doesn't exists");
   }
-  _position = id;
+  _position = newRoom;
   return true;
 }

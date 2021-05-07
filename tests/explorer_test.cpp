@@ -27,6 +27,23 @@ TEST_CASE("Test Explorer", "[explorer]") {
     REQUIRE_THROWS_AS(new dadv::Explorer(std::move(dungeon), 0, 0),
                       std::invalid_argument);
     dungeon = std::unique_ptr<dadv::Dungeon>(new dadv::Dungeon());
+    REQUIRE_THROWS_AS(new dadv::Explorer(std::move(dungeon), 0, 0),
+                      std::invalid_argument);
+  }
+
+  SECTION("A room with no valid near rooms") {
+    std::unique_ptr<dadv::Dungeon> dungeon =
+        std::unique_ptr<dadv::Dungeon>(new dadv::Dungeon());
+    std::string description("An weird room, all the door lead to an abyss.");
+    dadv::Room emptyRoom;
+    emptyRoom.id = 0;
+    emptyRoom.description = description;
+    emptyRoom.north = 1;
+    emptyRoom.east = 2;
+    emptyRoom.south = 3;
+    emptyRoom.west = 4;
+    dungeon->emplace(
+        std::pair<dadv::RoomId, dadv::Room>(emptyRoom.id, emptyRoom));
     auto explorer = new dadv::Explorer(std::move(dungeon), 0, 0);
     REQUIRE(explorer->getCurrentDescription() == description);
     REQUIRE_THROWS_AS(explorer->goNorth(), std::runtime_error);

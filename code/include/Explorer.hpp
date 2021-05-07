@@ -43,18 +43,18 @@ public:
    * @param first room from where explorer start
    * @param last room to arrive
    */
-  explicit Explorer(std::unique_ptr<Dungeon> dungeon, RoomId first,
-                    RoomId last);
+  explicit Explorer(std::unique_ptr<Dungeon> dungeon, const RoomId first,
+                    const RoomId last);
   /**
    * @brief Destructor
    */
-  ~Explorer();
+  ~Explorer() = default;
 
   /**
    * @brief Get the description of the current room
    * @return the description
    */
-  std::string getCurrentDescription();
+  std::string getCurrentDescription() noexcept;
   /**
    * @brief Get a ordered list of the possible directions.
    * List is like "NESW" if all directions are valid.
@@ -63,7 +63,7 @@ public:
    * Empty string if none are valid.
    * @return list of direction
    */
-  std::string getDirections();
+  std::string getDirections() noexcept;
 
   /**
    * @brief Move position to North, if is valid.
@@ -90,31 +90,27 @@ public:
    * @brief Return if current room is the last one
    * @return if is the last room
    */
-  bool isLastOne();
+  bool isLastOne() noexcept;
 
 private:
   /**
    * @brief Move position to a specific room id
    * @return if is was a valid move
    */
-  bool goToRoom(RoomId id);
+  bool goToRoom(const RoomId id);
 
   /**
    * @brief Dungeon rappresentation
    */
-  std::unique_ptr<Dungeon> _dungeon;
+  const std::unique_ptr<Dungeon> _dungeon;
   /**
    * @brief Current room id
    */
-  RoomId _position;
-  /**
-   * @brief First room id
-   */
-  RoomId _first;
+  Dungeon::iterator _position;
   /**
    * @brief Last room id
    */
-  RoomId _last;
+  const RoomId _last;
 };
 
 } // namespace dadv
