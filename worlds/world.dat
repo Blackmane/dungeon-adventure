@@ -1,0 +1,56 @@
+0
+Sei nella prima stanza del labirinto. Vedi tre corridoi, verso Nord, verso Est e verso Sud.
+1
+3
+2
+-1
+---
+1
+Vedi un'uscita verso Est, e una verso Sud.
+-1
+0
+5
+-1
+---
+2
+La stanza a forma di T si apre su tre corridoi, verso Ovest, verso Est e verso Sud.
+-1
+4
+6
+0
+---
+3
+Hai trovato una via senza uscita. La stanza è chiusa su tre lati. Puoi solo tornare indietro.
+0
+-1
+-1
+-1
+---
+4
+Due arcate si aprono dalla parete Nord e dalla parete Est. La prima sembra addentrarsi nel labirinto, mentre dalla seconda sembra arrivare della luce.
+2
+-1
+99
+-1
+---
+5
+Una strada senza uscita. La stanza è sigillata e puoi solo tornare indietro.
+-1
+-1
+-1
+1
+---
+6
+Sulla parete est della stanza un tempo c'era un'uscita, ma ora è murata. Non vi sono altre aperture oltre all'ingresso. Puoi solo tornare indietro.
+-1
+-1
+-1
+2
+---
+99
+Vedi la luce oltre l'arco di uscita del labirinto. Congratulazioni, sei riuscito a fuggire!
+-1
+-1
+-1
+-1
+---
