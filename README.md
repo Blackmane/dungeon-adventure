@@ -57,3 +57,8 @@ Attention! Asan detect some errors on catch2. They are out of the control of thi
 ## Other information
 
 The project has been tested only on linux.
+
+
+## Build status
+
+![build workflow](https://github.com/Blackmane/dungeon-adventure/actions/workflows/build.yml/badge.svg)
